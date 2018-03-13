@@ -32,10 +32,14 @@ class LinebotController extends Controller
     }
 
     public function webhook(Request $req){
+        //log events
+        Log::useFiles($this->file_path_line_log);
+        Log::info($req->all());
         $httpClient = new CurlHTTPClient(config('services.botline.access'));
         $bot = new LINEBot($httpClient, [
             'channelSecret' => config('services.botline.secret')
         ]);
+
         $signature = $req->header(HTTPHeader::LINE_SIGNATURE);
         if (empty($signature)) {
             abort(401);
@@ -46,9 +50,6 @@ class LinebotController extends Controller
             logger()->error((string) $e);
             abort(200);
         }
-        //log events
-        Log::useFiles($this->file_path_line_log);
-        Log::info($events);
 
         foreach ($events as $event) {
             $replyMessage = handle($event);
