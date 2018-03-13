@@ -26,9 +26,7 @@ Route::get('/', function () {
 //     $bot->pushMessage($userId, new TextMessageBuilder(Inspiring::quote()));
 // });
 
-Route::post('webhook/line', function (Request $req) {
-    
-});
+Route::post('webhook/line', 'LinebotController@webhook');
 
 // function setProfile($userId)
 // {
