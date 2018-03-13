@@ -19,10 +19,18 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Log;
 
 class LinebotController extends Controller
 {
-    
+
+    public $file_path_line_log;
+
+    public function __construct()
+    {
+      $this->file_path_line_log = storage_path().'/logs/line-log.log';
+    }
+
     public function webhook(Request $req){
         $httpClient = new CurlHTTPClient(config('services.botline.access'));
         $bot = new LINEBot($httpClient, [
@@ -38,11 +46,24 @@ class LinebotController extends Controller
             logger()->error((string) $e);
             abort(200);
         }
+        //log events
+        Log::useFiles($this->file_path_line_log);
+        Log::info($events);
 
         foreach ($events as $event) {
             $replyMessage = handle($event);
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
         }
         return response('OK', 200);
+    }
+
+    public function log() {
+      // Log::info('asdasd');
+      return response()->file($this->file_path_line_log);
+    }
+
+    public function getImageMap($size) {
+      $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
+      return response($data)->header('Content-Type', 'image/png');
     }
 }
