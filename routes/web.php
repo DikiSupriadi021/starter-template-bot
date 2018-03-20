@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 Route::post('webhook/line', 'LinebotController@webhook');
 Route::get('log', 'LinebotController@log');
-Route::get('imgFullMenu/{size}', 'LinebotController@getImageMap');
+Route::get('imgFullMenu/{size?}', 'LinebotController@getImageMap');
 
 // function setProfile($userId)
 // {

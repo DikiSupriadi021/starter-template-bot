@@ -18,6 +18,10 @@ use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
+use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
+use LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder;
+use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Log;
 
@@ -34,10 +38,10 @@ class LinebotController extends Controller
     public function webhook(Request $req){
         //log events
         Log::useFiles($this->file_path_line_log);
-        Log::info($req->all());
-        $httpClient = new CurlHTTPClient(config('services.botline.access'));
+
+        $httpClient = new CurlHTTPClient(env("LINE_TOKEN"));
         $bot = new LINEBot($httpClient, [
-            'channelSecret' => config('services.botline.secret')
+            'channelSecret' => env("LINE_SECRET")
         ]);
 
         $signature = $req->header(HTTPHeader::LINE_SIGNATURE);
@@ -52,7 +56,12 @@ class LinebotController extends Controller
         }
 
         foreach ($events as $event) {
-            $replyMessage = handle($event);
+            $replyMessage = new TextMessageBuilder('hallo');
+
+            if($event->getText() == 'Menu Comrades') {
+              $replyMessage = $this->sendFullMenu($event);
+            };
+
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
         }
         return response('OK', 200);
@@ -63,8 +72,35 @@ class LinebotController extends Controller
       return response()->file($this->file_path_line_log);
     }
 
-    public function getImageMap($size) {
-      $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
+    public function getImageMap($size = null) {
+      if($size) {
+        $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
+      }else{
+        $data = file_get_contents(public_path().'\img\FullMenu.png');
+      }
       return response($data)->header('Content-Type', 'image/png');
+    }
+
+    public function sendFullMenu($event) {
+      $baseSizeBuilder = new BaseSizeBuilder(1040,1040);
+      $imagemapMessageActionBuilder1 = new ImagemapMessageActionBuilder(
+            'Menu Berita',
+            new AreaBuilder(30,132,464,94)
+      );
+      $imagemapMessageActionBuilder2 = new ImagemapMessageActionBuilder(
+            'Menu Artikel',
+            new AreaBuilder(542,132,464,94)
+      );
+      $ImageMapMessageBuilder = new ImagemapMessageBuilder(
+          'https://corachatbot.azurewebsites.net/imgFullMenu',
+          'Text to be displayed',
+          $baseSizeBuilder,
+          [
+              $imagemapMessageActionBuilder1,
+              $imagemapMessageActionBuilder2
+          ]
+      );
+
+      return $ImageMapMessageBuilder;
     }
 }
