@@ -55,15 +55,15 @@ class LinebotController extends Controller
             abort(200);
         }
 
-        foreach ($events as $event) {
-            $replyMessage = new TextMessageBuilder('hallo');
+        // foreach ($events as $event) {
+        //     $replyMessage = new TextMessageBuilder('hallo');
 
-            if($event->getText() == 'Menu Comrades') {
-              $replyMessage = $this->sendFullMenu($event);
-            };
+        //     if($event->getText() == 'Menu Comrades') {
+        //       $replyMessage = $this->sendFullMenu($event);
+        //     };
 
-            $bot->replyMessage($event->getReplyToken(), $replyMessage);
-        }
+        //     $bot->replyMessage($event->getReplyToken(), $replyMessage);
+        // }
         return response('OK', 200);
     }
 
