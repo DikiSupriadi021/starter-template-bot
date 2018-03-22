@@ -24,6 +24,7 @@ use LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder;
 use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Log;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder;
 
 class LinebotController extends Controller
 {
@@ -60,6 +61,10 @@ class LinebotController extends Controller
 
             if($event->getText() == 'Menu Comrades') {
               $replyMessage = $this->sendFullMenu($event);
+            };
+
+            if($event->getText() == 'Card') {
+              $replyMessage = $this->sendArtikel();
             };
 
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
@@ -102,5 +107,23 @@ class LinebotController extends Controller
       );
 
       return $ImageMapMessageBuilder;
+    }
+
+    public function sendArtikel() {
+      $imageUrl = "https://corachatbot.azurewebsites.net/img/fullmenu%20-%20300.png";
+      $carouselTemplateBuilder = new CarouselTemplateBuilder([
+        new CarouselColumnTemplateBuilder('foo', 'bar', $imageUrl, [
+          new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
+          new PostbackTemplateActionBuilder('Buy', 'action=buy&itemid=123'),
+        ]),
+        new CarouselColumnTemplateBuilder('buz', 'qux', $imageUrl, [
+           new PostbackTemplateActionBuilder('Add to cart', 'action=add&itemid=123'),
+           new MessageTemplateActionBuilder('Say message', 'hello hello'),
+        ]),
+      ]);
+
+      $messageBuilder = new TemplateMessageBuilder('Button alt text', $carouselTemplateBuilder);
+
+      return $messageBuilder;
     }
 }
