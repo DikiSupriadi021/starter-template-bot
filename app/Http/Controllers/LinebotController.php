@@ -24,6 +24,7 @@ use LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder;
 use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Log;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder;
 
 class LinebotController extends Controller
 {
@@ -38,10 +39,10 @@ class LinebotController extends Controller
     public function webhook(Request $req){
         //log events
         Log::useFiles($this->file_path_line_log);
-
-        $httpClient = new CurlHTTPClient(env("LINE_TOKEN"));
+        Log::info($req->all());
+        $httpClient = new CurlHTTPClient(config('services.botline.access'));
         $bot = new LINEBot($httpClient, [
-            'channelSecret' => env("LINE_SECRET")
+            'channelSecret' => config('services.botline.secret')
         ]);
 
         $signature = $req->header(HTTPHeader::LINE_SIGNATURE);
@@ -62,6 +63,10 @@ class LinebotController extends Controller
               $replyMessage = $this->sendFullMenu($event);
             };
 
+            if($event->getText() == 'Card') {
+              $replyMessage = $this->sendArtikel();
+            };
+
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
         }
         return response('OK', 200);
@@ -72,12 +77,8 @@ class LinebotController extends Controller
       return response()->file($this->file_path_line_log);
     }
 
-    public function getImageMap($size = null) {
-      if($size) {
-        $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
-      }else{
-        $data = file_get_contents(public_path().'\img\FullMenu.png');
-      }
+    public function getImageMap($size) {
+      $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
       return response($data)->header('Content-Type', 'image/png');
     }
 
@@ -102,5 +103,23 @@ class LinebotController extends Controller
       );
 
       return $ImageMapMessageBuilder;
+    }
+
+    public function sendArtikel() {
+      $imageUrl = "https://corachatbot.azurewebsites.net/img/fullmenu%20-%20300.png";
+      $carouselTemplateBuilder = new CarouselTemplateBuilder([
+        new CarouselColumnTemplateBuilder('foo', 'bar', $imageUrl, [
+          new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
+          new PostbackTemplateActionBuilder('Buy', 'action=buy&itemid=123'),
+        ]),
+        new CarouselColumnTemplateBuilder('buz', 'qux', $imageUrl, [
+           new PostbackTemplateActionBuilder('Add to cart', 'action=add&itemid=123'),
+           new MessageTemplateActionBuilder('Say message', 'hello hello'),
+        ]),
+      ]);
+
+      $messageBuilder = new TemplateMessageBuilder('Button alt text', $carouselTemplateBuilder);
+
+      return $messageBuilder;
     }
 }

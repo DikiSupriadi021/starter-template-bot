@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Tokyo',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'ja',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,7 +181,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Packages\Cleverbot\CleverbotProvider::class
+        Packages\Cleverbot\CleverbotProvider::class,
 
     ],
 
