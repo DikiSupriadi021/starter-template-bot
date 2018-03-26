@@ -36,7 +36,7 @@ return [
     ],
 
     'botline' => [
-        'secret' => env('4bfea9dade426fa37ac6814847bd601e'),
-        'access' => env('DVR8imA/DdJXxMghjLgHK8lyIO6Ui7CfNdR4XCWHOxrnHtMi6ZgnxFXw7Yxu4w1wrOt1srqV8DSSSSmTBCUSgz7NhPEzDmJ65gZhAxim3ateaJ5GWqwLqhFUZet0y57lvtfSH9bL9rPtRi8xq3KmqAdB04t89/1O/w1cDnyilFU='),
+        'secret' => env('LINE_SECRET'),
+        'access' => env('LINE_TOKEN'),
     ],
 ];

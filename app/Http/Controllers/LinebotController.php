@@ -25,6 +25,7 @@ use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder;
+use App\Http\Controllers\TwitterController;
 
 class LinebotController extends Controller
 {
@@ -63,7 +64,11 @@ class LinebotController extends Controller
               $replyMessage = $this->sendFullMenu($event);
             };
 
-            if($event->getText() == 'Card') {
+            if($event->getText() == 'Cari Artikel Terbaru') {
+              $replyMessage = $this->sendArtikel();
+            };
+
+            if($event->getText() == 'Cari Tweet Komunitas') {
               $replyMessage = $this->sendArtikel();
             };
 
@@ -119,6 +124,25 @@ class LinebotController extends Controller
       ]);
 
       $messageBuilder = new TemplateMessageBuilder('Button alt text', $carouselTemplateBuilder);
+
+      return $messageBuilder;
+    }
+
+    public function sendTwitter() {
+      $twitter = new TwitterController();
+      $data = [];
+
+      foreach ($twitter->getTwitterTimeline() as $value) {
+        array_push($data,[
+          new CarouselColumnTemplateBuilder($value['user'], $value['text'], $value['foto'], [
+            new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
+          ])
+        ]);
+      };
+
+      $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
+
+      $messageBuilder = new TemplateMessageBuilder('Twitter Komunitas Graha & Rumah Cemara', $carouselTemplateBuilder);
 
       return $messageBuilder;
     }
