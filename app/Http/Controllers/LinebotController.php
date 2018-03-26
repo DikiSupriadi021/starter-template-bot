@@ -68,8 +68,8 @@ class LinebotController extends Controller
               $replyMessage = $this->sendArtikel();
             };
 
-            if($event->getText() == 'Cari Tweet Komunitas') {
-              $replyMessage = $this->sendArtikel();
+            if($event->getText() == 'Cek Tweet Komunitas') {
+              $replyMessage = $this->sendTwitter();
             };
 
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
@@ -131,13 +131,18 @@ class LinebotController extends Controller
     public function sendTwitter() {
       $twitter = new TwitterController();
       $data = [];
-
+      $foto = '';
       foreach ($twitter->getTwitterTimeline() as $value) {
-        array_push($data,[
-          new CarouselColumnTemplateBuilder($value['user'], $value['text'], $value['foto'], [
+          if($value['user'] == 'rumahcemara') {
+            $foto = 'https://corachatbot.azurewebsites.net/img/rumah-cemara.png';
+          }else{
+            $foto = 'https://corachatbot.azurewebsites.net/img/graha.png';
+          }
+          $datas = new CarouselColumnTemplateBuilder($value['user'], substr($value['text'],59), $foto, [
             new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
-          ])
-        ]);
+          ]);
+
+          array_push($data, $datas);
       };
 
       $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
