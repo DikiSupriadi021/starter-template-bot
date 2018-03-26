@@ -133,12 +133,12 @@ class LinebotController extends Controller
       $data = [];
       $foto = '';
       foreach ($twitter->getTwitterTimeline() as $value) {
-          if($value['user'] == 'rumahcemara') {
+          if($value['user'] == 'RumahCemara') {
             $foto = 'https://corachatbot.azurewebsites.net/img/rumah-cemara.png';
           }else{
             $foto = 'https://corachatbot.azurewebsites.net/img/graha.png';
-          }
-          $datas = new CarouselColumnTemplateBuilder($value['user'], substr($value['text'],59), $foto, [
+          };
+          $datas = new CarouselColumnTemplateBuilder($value['user'], $value['text'], $foto, [
             new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
           ]);
 

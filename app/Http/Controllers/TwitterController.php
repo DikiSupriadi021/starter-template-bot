@@ -19,7 +19,7 @@ class TwitterController extends Controller
         foreach ($arrayMerge as $value) {
           array_push($result,[
             'created_at' => $value['created_at'],
-            'text' => $value['text'],
+            'text' => substr($value['text'],0,59),
             'user' => $value['user']['screen_name'],
             'foto' => $value['user']['profile_image_url_https'],
             'bg_color' => $value['user']['profile_background_color']
