@@ -139,7 +139,7 @@ class LinebotController extends Controller
             $foto = 'https://corachatbot.azurewebsites.net/img/graha.png';
           };
           $datas = new CarouselColumnTemplateBuilder($value['user'], $value['text'], $foto, [
-            new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
+            new UriTemplateActionBuilder('Go to twitter', 'https://line.me'),
           ]);
 
           array_push($data, $datas);

@@ -10,8 +10,8 @@ class TwitterController extends Controller
     public function getTwitterTimeline() {
       try
       {
-      	$rumahcemara = Twitter::getUserTimeline(['screen_name' => 'rumahcemara', 'count' => 3, 'format' => 'array']);
-        $graha = Twitter::getUserTimeline(['screen_name' => 'grahapitamerah', 'count' => 3, 'format' => 'array']);
+      	$rumahcemara = Twitter::getUserTimeline(['screen_name' => 'rumahcemara', 'count' => 5, 'format' => 'array']);
+        $graha = Twitter::getUserTimeline(['screen_name' => 'grahapitamerah', 'count' => 5, 'format' => 'array']);
 
         $arrayMerge = array_merge($rumahcemara,$graha);
         $result=[];
@@ -32,11 +32,11 @@ class TwitterController extends Controller
       	dd(Twitter::logs());
       }
 
-      return $result;
+      return $arrayMerge;
     }
 
-    public function getTweet($id) {
-      $data = Twitter::getTweet($id);
+    public function getTweet() {
+      $data = Twitter::getOembed('735727067937918978');
 
       return response()->json($data);
     }
