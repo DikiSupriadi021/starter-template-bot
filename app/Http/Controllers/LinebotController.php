@@ -64,11 +64,15 @@ class LinebotController extends Controller
               $replyMessage = $this->sendFullMenu($event);
             };
 
-            if($event->getText() == 'Cari Artikel Terbaru') {
+            if($event->getText() == 'Cek Artikel Terbaru') {
               $replyMessage = $this->sendArtikel();
             };
 
             if($event->getText() == 'Cek Tweet Komunitas') {
+              $replyMessage = $this->sendTwitter();
+            };
+
+            if(substr($event->getText(), -1) == '?') {
               $replyMessage = $this->sendTwitter();
             };
 
@@ -111,21 +115,26 @@ class LinebotController extends Controller
     }
 
     public function sendArtikel() {
-      $imageUrl = "https://corachatbot.azurewebsites.net/img/fullmenu%20-%20300.png";
-      $carouselTemplateBuilder = new CarouselTemplateBuilder([
-        new CarouselColumnTemplateBuilder('foo', 'bar', $imageUrl, [
-          new UriTemplateActionBuilder('Go to line.me', 'https://line.me'),
-          new PostbackTemplateActionBuilder('Buy', 'action=buy&itemid=123'),
-        ]),
-        new CarouselColumnTemplateBuilder('buz', 'qux', $imageUrl, [
-           new PostbackTemplateActionBuilder('Add to cart', 'action=add&itemid=123'),
-           new MessageTemplateActionBuilder('Say message', 'hello hello'),
-        ]),
-      ]);
+      $api = file_get_contents(env('COMRADES_API').'/posting/kategori/Artikel/id/page/0');
+      $api = json_decode($api);
+      $data = [];
 
-      $messageBuilder = new TemplateMessageBuilder('Button alt text', $carouselTemplateBuilder);
+      foreach($api->result as $d) {
+        $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
+
+        $datas = new CarouselColumnTemplateBuilder($d->judul, substr(strip_tags($d->isi),0,59), $imageUrl, [
+          new UriTemplateActionBuilder('Baca lebih lanjut', $d->sumber)
+        ]);
+
+        array_push($data, $datas);
+      }
+
+      $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
+      $messageBuilder = new TemplateMessageBuilder('Artikel Comrades', $carouselTemplateBuilder);
 
       return $messageBuilder;
+
+      // dd($messageBuilder);
     }
 
     public function sendTwitter() {
