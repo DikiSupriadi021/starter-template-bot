@@ -158,6 +158,7 @@ class LinebotController extends Controller
 
       $messageBuilder = new TemplateMessageBuilder('Twitter Komunitas Graha & Rumah Cemara', $carouselTemplateBuilder);
 
-      return $messageBuilder;
+      // return $messageBuilder;
+      dd($data);
     }
 }

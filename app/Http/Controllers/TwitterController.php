@@ -32,7 +32,7 @@ class TwitterController extends Controller
       	dd(Twitter::logs());
       }
 
-      return $arrayMerge;
+      return $result;
     }
 
     public function getTweet() {

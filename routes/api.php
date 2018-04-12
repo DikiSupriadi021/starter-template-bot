@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('twitter', 'TwitterController@getTwitterTimeline');
-Route::get('tes', 'LinebotController@sendArtikel');
+Route::get('tes', 'LinebotController@sendTwitter');
