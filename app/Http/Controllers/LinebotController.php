@@ -72,6 +72,14 @@ class LinebotController extends Controller
               $replyMessage = $this->sendTwitter();
             };
 
+            if($event->getText() == 'Cari Layanan HIV') {
+              $replyMessage = $this->sendLokasiARV();
+            };
+
+            if($event->getText() == 'Tweet Dukungan') {
+              $replyMessage = $this->sendTweetDukungan();
+            };
+
             if(substr($event->getText(), -1) == '?') {
               $replyMessage = $this->sendTwitter();
             };
@@ -122,12 +130,12 @@ class LinebotController extends Controller
       foreach($api->result as $d) {
         $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
 
-        $datas = new CarouselColumnTemplateBuilder($d->judul, substr(strip_tags($d->isi),0,59), $imageUrl, [
+        $datas = new CarouselColumnTemplateBuilder(substr($d->judul,0,39), substr(strip_tags($d->isi),0,59), $imageUrl, [
           new UriTemplateActionBuilder('Baca lebih lanjut', $d->sumber)
         ]);
 
         array_push($data, $datas);
-      }
+      };
 
       $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
       $messageBuilder = new TemplateMessageBuilder('Artikel Comrades', $carouselTemplateBuilder);
@@ -158,7 +166,57 @@ class LinebotController extends Controller
 
       $messageBuilder = new TemplateMessageBuilder('Twitter Komunitas Graha & Rumah Cemara', $carouselTemplateBuilder);
 
-      // return $messageBuilder;
-      dd($data);
+       return $messageBuilder;
+    //   dd($data);
+    }
+
+    public function sendLokasiARV() {
+      $api = file_get_contents(env('COMRADES_API').'/lokasi_obatLine');
+      $api = json_decode($api);
+      $data = [];
+      $i = 0;
+
+      foreach($api->result as $d) {
+        if($i == 9) {
+          break;
+        };
+        $imageUrl = env('COMRADES_API').'/pic_lokasi/'.$d->foto;
+
+        $datas = new CarouselColumnTemplateBuilder(substr($d->nama,0,39), substr(strip_tags($d->deskripsi),0,59), $imageUrl, [
+          new UriTemplateActionBuilder('Tunjukan Arah', 'https://www.google.com/maps')
+        ]);
+
+        array_push($data, $datas);
+
+        $i++;
+      };
+
+      $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
+      $messageBuilder = new TemplateMessageBuilder('Lokasi Obat ARV Comrades', $carouselTemplateBuilder);
+
+      return $messageBuilder;
+      // dd($messageBuilder);
+    }
+
+    public function sendTweetDukungan() {
+      $api = file_get_contents(env('COMRADES_API').'/sentiment/0');
+      $api = json_decode($api);
+      $data = [];
+
+      foreach($api->result as $d) {
+        // $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
+
+        $datas = new CarouselColumnTemplateBuilder(substr($d->screen_name,0,39), substr(strip_tags($d->text),0,59),'', [
+          new UriTemplateActionBuilder('Baca lebih lanjut', 'https://twitter.com/'.$d->screen_name.'/status/'.$d->id_string)
+        ]);
+
+        array_push($data, $datas);
+      };
+
+      $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
+      $messageBuilder = new TemplateMessageBuilder('Tweet Dukungan Comrades', $carouselTemplateBuilder);
+
+      return $messageBuilder;
+      // dd($messageBuilder);
     }
 }
