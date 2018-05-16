@@ -59,26 +59,18 @@ class LinebotController extends Controller
 
         foreach ($events as $event) {
             $replyMessage = new TextMessageBuilder('hallo');
-
-            if($event->getText() == 'Menu Comrades') {
-              $replyMessage = $this->sendFullMenu($event);
-            };
-
-            if($event->getText() == 'Cek Artikel Terbaru') {
-              $replyMessage = $this->sendArtikel();
-            };
-
-            if($event->getText() == 'Cek Tweet Komunitas') {
-              $replyMessage = $this->sendTwitter();
-            };
-
-            if($event->getText() == 'Cari Layanan HIV') {
-              $replyMessage = $this->sendLokasiARV();
-            };
-
-            if($event->getText() == 'Tweet Dukungan') {
-              $replyMessage = $this->sendTweetDukungan();
-            };
+            $arrMenu = [
+              'Menu Comrades' => $this->sendFullMenu($event),
+              'Cek Artikel Terbaru' => $this->sendArtikel(),
+              'Cek Tweet Komunitas' => $this->sendTwitter(),
+              'Cari Layanan HIV' => $this->sendLokasiARV(),
+              'Tweet Dukungan' => $this->sendTweetDukungan(),
+              'Cek Mitos dan Fakta' => $this->sendTweetDukungan()
+            ];
+            
+            if (array_key_exists($event->getText(), $arrMenu)) {
+              $replyMessage = $arrMenu[$event->getText()];
+            }
 
             if(substr($event->getText(), -1) == '?') {
               $replyMessage = $this->sendTwitter();
