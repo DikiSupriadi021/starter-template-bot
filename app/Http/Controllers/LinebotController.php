@@ -87,12 +87,12 @@ class LinebotController extends Controller
     }
 
     public function getImageMap($size) {
-      $data = file_get_contents(public_path().'\img\FullMenu - '.$size.'.png');
+      $data = file_get_contents(public_path().'\img\FullMenuv2 - '.$size.'.png');
       return response($data)->header('Content-Type', 'image/png');
     }
 
     public function sendFullMenu($event) {
-      $baseSizeBuilder = new BaseSizeBuilder(1040,1040);
+      $baseSizeBuilder = new BaseSizeBuilder(1800,1040);
       $imagemapMessageActionBuilder1 = new ImagemapMessageActionBuilder(
             'Menu Berita',
             new AreaBuilder(30,132,464,94)
@@ -102,7 +102,7 @@ class LinebotController extends Controller
             new AreaBuilder(542,132,464,94)
       );
       $ImageMapMessageBuilder = new ImagemapMessageBuilder(
-          'https://corachatbot.azurewebsites.net/imgFullMenu',
+          'https://corachatbot.azurewebsites.net/imgFullMenuV2',
           'Text to be displayed',
           $baseSizeBuilder,
           [
