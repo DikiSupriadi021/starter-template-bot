@@ -26,6 +26,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder;
 use App\Http\Controllers\TwitterController;
+use App\Message;
 
 class LinebotController extends Controller
 {
@@ -210,5 +211,17 @@ class LinebotController extends Controller
 
       return $messageBuilder;
       // dd($messageBuilder);
+    }
+
+    public function simpanMessage($data) {
+      try {
+        $data = new Message($data);
+        $data->save();
+
+        return response()->json(["status"=>200,"message"=>"berhasil"]);
+      }catch(Exception $e) {
+        return response()->json($e);
+      }
+
     }
 }
