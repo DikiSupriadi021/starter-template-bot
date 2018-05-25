@@ -8,7 +8,7 @@ class Message extends Model
 {
     public $table = 'log_comrades_bot';
 
-    protected $fillable = ['idUserLine', 'message'];
+    protected $fillable = ['idUser', 'idMessage', 'message'];
 
     protected $primaryKey = 'id';
 }

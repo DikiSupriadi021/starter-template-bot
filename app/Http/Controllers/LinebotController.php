@@ -69,13 +69,17 @@ class LinebotController extends Controller
               'Cek Mitos dan Fakta' => $this->sendTweetDukungan()
             ];
             
-            if (array_key_exists($event->getText(), $arrMenu)) {
-              $replyMessage = $arrMenu[$event->getText()];
-            }
+            if($event->getMessageType() == 'text') {
+              if (array_key_exists($event->getText(), $arrMenu)) {
+                $replyMessage = $arrMenu[$event->getText()];
+              }
 
-            if(substr($event->getText(), -1) == '?') {
-              $replyMessage = $this->sendTwitter();
-            };
+              if(substr($event->getText(), -1) == '?') {
+                $replyMessage = $this->sendTwitter();
+              };
+              
+              $this->simpanMessage(["idUser" => $event->getUserId(),"idMessage"=>$event->getMessageId(), "message" => $event->getText()]);
+            }
 
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
         }
