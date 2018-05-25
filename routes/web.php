@@ -27,6 +27,7 @@ Route::get('/', function () {
 // });
 
 Route::post('webhook/line', 'LinebotController@webhook');
+Route::post('tes', 'LinebotController@tes');
 Route::get('log', 'LinebotController@log');
 Route::get('imgFullMenuV2/{size}', 'LinebotController@getImageMap');
 

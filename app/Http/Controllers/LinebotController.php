@@ -218,9 +218,9 @@ class LinebotController extends Controller
         $data = new Message($data);
         $data->save();
 
-        return response()->json(["status"=>200,"message"=>"berhasil"]);
+        // return response()->json(["status"=>200,"message"=>"berhasil"]);
       }catch(Exception $e) {
-        return response()->json($e);
+        logger()->error((string) $e);
       }
 
     }
