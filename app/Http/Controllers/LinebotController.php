@@ -100,11 +100,11 @@ class LinebotController extends Controller
       $baseSizeBuilder = new BaseSizeBuilder(1800,1040);
       $imagemapMessageActionBuilder1 = new ImagemapMessageActionBuilder(
             'Menu Berita',
-            new AreaBuilder(40,222,302,74)
+            new AreaBuilder(41,223,296,68)
       );
       $imagemapMessageActionBuilder2 = new ImagemapMessageActionBuilder(
             'Menu Artikel',
-            new AreaBuilder(358,222,302,74)
+            new AreaBuilder(360,223,296,68)
       );
       $imagemapMessageActionBuilder3 = new ImagemapMessageActionBuilder(
             'Menu Cerita',
@@ -156,7 +156,18 @@ class LinebotController extends Controller
           $baseSizeBuilder,
           [
               $imagemapMessageActionBuilder1,
-              $imagemapMessageActionBuilder2
+              $imagemapMessageActionBuilder2,
+              $imagemapMessageActionBuilder3,
+              $imagemapMessageActionBuilder4,
+              $imagemapMessageActionBuilder5,
+              $imagemapMessageActionBuilder6,
+              $imagemapMessageActionBuilder7,
+              $imagemapMessageActionBuilder8,
+              $imagemapMessageActionBuilder9,
+              $imagemapMessageActionBuilder10,
+              $imagemapMessageActionBuilder11,
+              $imagemapMessageActionBuilder12,
+              $imagemapMessageActionBuilder13
           ]
       );
 
