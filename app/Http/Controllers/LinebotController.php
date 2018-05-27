@@ -114,39 +114,39 @@ class LinebotController extends Controller
             'Cek Mitos & Fakta',
             new AreaBuilder(360,302,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder5 = new ImagemapMessageActionBuilder(
             'Menu Event',
             new AreaBuilder(42,383,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder6 = new ImagemapMessageActionBuilder(
             'Menu Obat ARV',
             new AreaBuilder(41,566,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder7 = new ImagemapMessageActionBuilder(
             'Menu Konsultasi',
             new AreaBuilder(350,566,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder8 = new ImagemapMessageActionBuilder(
             'Menu Lokasi & Layanan ARV',
             new AreaBuilder(42,647,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder9 = new ImagemapMessageActionBuilder(
             'Menu Tweet Dukungan',
             new AreaBuilder(42,822,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder10 = new ImagemapMessageActionBuilder(
             'Menu Tweet Komunitas',
             new AreaBuilder(361,826,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder11 = new ImagemapMessageActionBuilder(
             'Menu Settings',
             new AreaBuilder(41,1006,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder12 = new ImagemapMessageActionBuilder(
             'Menu Profile',
             new AreaBuilder(361,1006,296,68)
       );
-      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+      $imagemapMessageActionBuilder13 = new ImagemapMessageActionBuilder(
             'Menu Bantuan',
             new AreaBuilder(41,1089,296,68)
       );
