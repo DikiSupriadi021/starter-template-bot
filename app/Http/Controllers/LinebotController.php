@@ -100,11 +100,55 @@ class LinebotController extends Controller
       $baseSizeBuilder = new BaseSizeBuilder(1800,1040);
       $imagemapMessageActionBuilder1 = new ImagemapMessageActionBuilder(
             'Menu Berita',
-            new AreaBuilder(30,132,464,94)
+            new AreaBuilder(40,222,302,74)
       );
       $imagemapMessageActionBuilder2 = new ImagemapMessageActionBuilder(
             'Menu Artikel',
-            new AreaBuilder(542,132,464,94)
+            new AreaBuilder(358,222,302,74)
+      );
+      $imagemapMessageActionBuilder3 = new ImagemapMessageActionBuilder(
+            'Menu Cerita',
+            new AreaBuilder(41,302,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Cek Mitos & Fakta',
+            new AreaBuilder(360,302,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Event',
+            new AreaBuilder(42,383,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Obat ARV',
+            new AreaBuilder(41,566,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Konsultasi',
+            new AreaBuilder(350,566,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Lokasi & Layanan ARV',
+            new AreaBuilder(42,647,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Tweet Dukungan',
+            new AreaBuilder(42,822,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Tweet Komunitas',
+            new AreaBuilder(361,826,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Settings',
+            new AreaBuilder(41,1006,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Profile',
+            new AreaBuilder(361,1006,296,68)
+      );
+      $imagemapMessageActionBuilder4 = new ImagemapMessageActionBuilder(
+            'Menu Bantuan',
+            new AreaBuilder(41,1089,296,68)
       );
       $ImageMapMessageBuilder = new ImagemapMessageBuilder(
           'https://corachatbot.azurewebsites.net/imgFullMenuV2',
