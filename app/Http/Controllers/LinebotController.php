@@ -59,28 +59,44 @@ class LinebotController extends Controller
         }
 
         foreach ($events as $event) {
-            $replyMessage = new TextMessageBuilder('hallo');
-            $arrMenu = [
-              'Menu Comrades' => $this->sendFullMenu($event),
-              'Cek Artikel Terbaru' => $this->sendArtikel(),
-              'Cek Tweet Komunitas' => $this->sendTwitter(),
-              'Cari Layanan HIV' => $this->sendLokasiARV(),
-              'Tweet Dukungan' => $this->sendTweetDukungan(),
-              'Cek Mitos dan Fakta' => $this->sendTweetDukungan()
-            ];
-            
-            if($event->getMessageType() == 'text') {
-              if (array_key_exists($event->getText(), $arrMenu)) {
-                $replyMessage = $arrMenu[$event->getText()];
-              }
-
-              if(substr($event->getText(), -1) == '?') {
-                $replyMessage = $this->sendTwitter();
-              };
-              
-              $this->simpanMessage(["idUser" => $event->getUserId(),"idMessage"=>$event->getMessageId(), "message" => $event->getText()]);
+            switch ($event->getText()) {
+                case 'Menu Comrades' :
+                    $replyMessage = $this->sendFullMenu($event);
+                    break;
+                case 'Cek Artikel Terbaru' :
+                    $replyMessage = $this->sendArtikel();
+                    break;
+                case 'Cek Tweet Komunitas' :
+                    $replyMessage = $this->sendTwitter();
+                    break;
+                case 'Cari Layanan HIV' :
+                    $replyMessage = $this->sendLokasiARV();
+                    break;
+                case 'Tweet Dukungan' :
+                    $replyMessage = $this->sendTweetDukungan();
+                    break;
+                case 'Cek Mitos dan Fakta' :
+                    $replyMessage = $this->sendTweetDukungan();
+                    break;
+                case 'Menu Konsultasi' :
+                    $replyMessage = $this->sendKonsultasi($event);
+                    break;
+                case 'Menu Berita' :
+                    $replyMessage = $this->sendBerita();
+                    break;
+                case 'Menu Artikel' :
+                    $replyMessage = $this->sendArtikel();
+                    break;
+                case 'Menu Lokasi & Layanan ARV' :
+                    $replyMessage = $this->sendLokasiARV();
+                    break;
+                case "Cek Artikel Terbaru":
+                    $replyMessage = $this->sendArtikel();
+                    break;
+                default:
+                    $replyMessage = new TextMessageBuilder('hallo');
             }
-
+            $this->simpanMessage(["idUser" => $event->getUserId(),"idMessage"=>$event->getMessageId(), "message" => $event->getText()]);
             $bot->replyMessage($event->getReplyToken(), $replyMessage);
         }
         return response('OK', 200);
@@ -180,7 +196,11 @@ class LinebotController extends Controller
       $data = [];
 
       foreach($api->result as $d) {
-        $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
+        if(substr($d->foto,0,4) == "http") {
+            $imageUrl = 'https://corachatbot.azurewebsites.net/img/rumah-cemara.png';
+        }else{
+            $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
+        }
 
         $datas = new CarouselColumnTemplateBuilder(substr($d->judul,0,39), substr(strip_tags($d->isi),0,59), $imageUrl, [
           new UriTemplateActionBuilder('Baca lebih lanjut', $d->sumber)
@@ -191,6 +211,33 @@ class LinebotController extends Controller
 
       $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
       $messageBuilder = new TemplateMessageBuilder('Artikel Comrades', $carouselTemplateBuilder);
+
+      return $messageBuilder;
+
+      // dd($messageBuilder);
+    }
+    
+    public function sendBerita() {
+      $api = file_get_contents(env('COMRADES_API').'/posting/kategori/Berita/id/page/0');
+      $api = json_decode($api);
+      $data = [];
+
+      foreach($api->result as $d) {
+        if(substr($d->foto,0,4) == "http") {
+            $imageUrl = 'https'.substr($d->foto,4);
+        }else{
+            $imageUrl = env('COMRADES_API').'/pic_posting/'.$d->foto;
+        }
+
+        $datas = new CarouselColumnTemplateBuilder(substr($d->judul,0,39), substr(strip_tags($d->isi),0,59), $imageUrl, [
+          new UriTemplateActionBuilder('Baca lebih lanjut', $d->sumber)
+        ]);
+
+        array_push($data, $datas);
+      };
+
+      $carouselTemplateBuilder = new CarouselTemplateBuilder($data);
+      $messageBuilder = new TemplateMessageBuilder('Berita Comrades', $carouselTemplateBuilder);
 
       return $messageBuilder;
 
@@ -282,5 +329,9 @@ class LinebotController extends Controller
         logger()->error((string) $e);
       }
 
+    }
+
+    public function sendKonsultasi($event) {
+        return $replyMessage = new TextMessageBuilder('Maaf layanan yang anda pilih belum tersedia.');
     }
 }
