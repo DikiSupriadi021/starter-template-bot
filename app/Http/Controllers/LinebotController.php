@@ -47,58 +47,58 @@ class LinebotController extends Controller
             'channelSecret' => config('services.botline.secret')
         ]);
 
-        $signature = $req->header(HTTPHeader::LINE_SIGNATURE);
-        if (empty($signature)) {
-            abort(401);
-        }
-        try {
-            $events = $bot->parseEventRequest($req->getContent(), $signature);
-        } catch (\Exception $e) {
-            logger()->error((string) $e);
-            abort(200);
-        }
+        // $signature = $req->header(HTTPHeader::LINE_SIGNATURE);
+        // if (empty($signature)) {
+        //     abort(401);
+        // }
+        // try {
+        //     $events = $bot->parseEventRequest($req->getContent(), $signature);
+        // } catch (\Exception $e) {
+        //     logger()->error((string) $e);
+        //     abort(200);
+        // }
 
-        foreach ($events as $event) {
-            switch ($event->getText()) {
-                case 'Menu Comrades' :
-                    $replyMessage = $this->sendFullMenu($event);
-                    break;
-                case 'Cek Artikel Terbaru' :
-                    $replyMessage = $this->sendArtikel();
-                    break;
-                case 'Cek Tweet Komunitas' :
-                    $replyMessage = $this->sendTwitter();
-                    break;
-                case 'Cari Layanan HIV' :
-                    $replyMessage = $this->sendLokasiARV();
-                    break;
-                case 'Tweet Dukungan' :
-                    $replyMessage = $this->sendTweetDukungan();
-                    break;
-                case 'Cek Mitos dan Fakta' :
-                    $replyMessage = $this->sendTweetDukungan();
-                    break;
-                case 'Menu Konsultasi' :
-                    $replyMessage = $this->sendKonsultasi($event);
-                    break;
-                case 'Menu Berita' :
-                    $replyMessage = $this->sendBerita();
-                    break;
-                case 'Menu Artikel' :
-                    $replyMessage = $this->sendArtikel();
-                    break;
-                case 'Menu Lokasi & Layanan ARV' :
-                    $replyMessage = $this->sendLokasiARV();
-                    break;
-                case "Cek Artikel Terbaru":
-                    $replyMessage = $this->sendArtikel();
-                    break;
-                default:
-                    $replyMessage = new TextMessageBuilder('hallo');
-            }
-            $this->simpanMessage(["idUser" => $event->getUserId(),"idMessage"=>$event->getMessageId(), "message" => $event->getText()]);
-            $bot->replyMessage($event->getReplyToken(), $replyMessage);
-        }
+        // foreach ($events as $event) {
+        //     switch ($event->getText()) {
+        //         case 'Menu Comrades' :
+        //             $replyMessage = $this->sendFullMenu($event);
+        //             break;
+        //         case 'Cek Artikel Terbaru' :
+        //             $replyMessage = $this->sendArtikel();
+        //             break;
+        //         case 'Cek Tweet Komunitas' :
+        //             $replyMessage = $this->sendTwitter();
+        //             break;
+        //         case 'Cari Layanan HIV' :
+        //             $replyMessage = $this->sendLokasiARV();
+        //             break;
+        //         case 'Tweet Dukungan' :
+        //             $replyMessage = $this->sendTweetDukungan();
+        //             break;
+        //         case 'Cek Mitos dan Fakta' :
+        //             $replyMessage = $this->sendTweetDukungan();
+        //             break;
+        //         case 'Menu Konsultasi' :
+        //             $replyMessage = $this->sendKonsultasi($event);
+        //             break;
+        //         case 'Menu Berita' :
+        //             $replyMessage = $this->sendBerita();
+        //             break;
+        //         case 'Menu Artikel' :
+        //             $replyMessage = $this->sendArtikel();
+        //             break;
+        //         case 'Menu Lokasi & Layanan ARV' :
+        //             $replyMessage = $this->sendLokasiARV();
+        //             break;
+        //         case "Cek Artikel Terbaru":
+        //             $replyMessage = $this->sendArtikel();
+        //             break;
+        //         default:
+        //             $replyMessage = new TextMessageBuilder('hallo');
+        //     }
+        //     $this->simpanMessage(["idUser" => $event->getUserId(),"idMessage"=>$event->getMessageId(), "message" => $event->getText()]);
+        //     $bot->replyMessage($event->getReplyToken(), $replyMessage);
+        // }
         return response('OK', 200);
     }
 
